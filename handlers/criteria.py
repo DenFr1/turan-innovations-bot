@@ -10,16 +10,15 @@ PREFIX = "criteria"
 
 @router.message(F.text == "Этапы и критерии")
 async def criteria(message: types.Message):
-    # Бот сам собирает текст сообщения из твоих длинных вопросов
     text = "<b>Выберите интересующий вас вопрос:</b>\n\n"
 
     for key, value in CRITERIA_DATA.items():
-        text += f"{key}. {value['q']}\n"  # Берет оригинальный длинный вопрос
+        text += f"{key}. {value['q']}\n"
 
     await message.answer(
         text,
         reply_markup=generate_faq_keyboard(CRITERIA_DATA, PREFIX),
-        parse_mode="HTML"  # Обязательно, чтобы работал жирный шрифт
+        parse_mode="HTML"
     )
 
 

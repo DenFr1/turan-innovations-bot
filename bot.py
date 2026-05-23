@@ -6,10 +6,10 @@ from dotenv import load_dotenv
 from handlers import register_routes
 from keyboards.commands import set_bot_commands
 
-# Находим файл .env и загружаем из него переменные окружения
+# Finding a file .env and load local variables from it
 load_dotenv()
 
-# Забираем токен.
+# Getting the token.
 TOKEN = os.getenv("BOT_TOKEN")
 
 

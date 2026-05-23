@@ -17,3 +17,4 @@ def register_routes(dp: Dispatcher):
     dp.include_router(criteria_router)
     dp.include_router(help_router)
     dp.include_router(input_error_router)
+

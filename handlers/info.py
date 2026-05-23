@@ -10,16 +10,14 @@ PREFIX = "info"
 
 @router.message(F.text == "О конкурсе")
 async def about_competition(message: types.Message):
-    # Бот сам собирает текст сообщения из твоих длинных вопросов
     text = "<b>Выберите интересующий вас вопрос:</b>\n\n"
 
     for key, value in INFO_DATA.items():
-        text += f"{key}. {value['q']}\n"  # Берет оригинальный длинный вопрос
-
+        text += f"{key}. {value['q']}\n"
     await message.answer(
         text,
         reply_markup=generate_faq_keyboard(INFO_DATA, PREFIX),
-        parse_mode="HTML"  # Обязательно, чтобы работал жирный шрифт
+        parse_mode="HTML"
     )
 
 
