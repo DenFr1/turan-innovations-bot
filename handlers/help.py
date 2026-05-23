@@ -9,4 +9,4 @@ router = Router()
 async def help_command(message: types.Message, bot: Bot):
     text = await get_bot_commands(bot)
 
-    await message.answer(f"Доступные команды:\n\n{text}")
+    await message.answer(f"<b>Доступные команды</b>:\n\n{text}", parse_mode="HTML")
