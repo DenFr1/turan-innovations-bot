@@ -1,0 +1,50 @@
+from aiogram import F, Router, types
+from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
+from keyboards.keyboards import generate_faq_keyboard
+from data.questions_data import CRITERIA_DATA
+
+router = Router()
+
+PREFIX = "criteria"
+
+
+@router.message(F.text == "Этапы и критерии")
+async def criteria(message: types.Message):
+    # Бот сам собирает текст сообщения из твоих длинных вопросов
+    text = "<b>Выберите интересующий вас вопрос:</b>\n\n"
+
+    for key, value in CRITERIA_DATA.items():
+        text += f"{key}. {value['q']}\n"  # Берет оригинальный длинный вопрос
+
+    await message.answer(
+        text,
+        reply_markup=generate_faq_keyboard(CRITERIA_DATA, PREFIX),
+        parse_mode="HTML"  # Обязательно, чтобы работал жирный шрифт
+    )
+
+
+@router.callback_query(F.data.startswith(f"{PREFIX}:"))
+async def info_callback(callback: CallbackQuery):
+    item_id = callback.data.split(":")[1]
+
+    if item_id == "back":
+        text = "<b>Выберите интересующий вас вопрос:</b>\n\n"
+        for key, value in CRITERIA_DATA.items():
+            text += f"{key}. {value['q']}\n"
+
+        await callback.message.edit_text(
+            text=text,
+            reply_markup=generate_faq_keyboard(CRITERIA_DATA, PREFIX),
+            parse_mode="HTML"
+        )
+        await callback.answer()
+        return
+
+    answer_text = CRITERIA_DATA[item_id]["a"]
+
+    back_button = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🔙 Назад к вопросам", callback_data=f"{PREFIX}:back")]
+    ])
+
+    await callback.message.edit_text(text=answer_text, reply_markup=back_button)
+    await callback.answer()
